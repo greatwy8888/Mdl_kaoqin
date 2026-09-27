@@ -10,6 +10,8 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
+import java.util.Calendar;
+
 public class MainActivity extends Activity {
     private WebView webView;
     private SharedPreferences notePrefs;
@@ -19,6 +21,12 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         notePrefs = getSharedPreferences("kaoqin_notes", Context.MODE_PRIVATE);
+
+        // 每天凌晨1点自动处理下一天；如果错过了闹钟，今天1点以后打开APP时补一次。
+        AttendanceAlarmReceiver.scheduleNextAlarm(this);
+        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 1) {
+            AttendanceAlarmReceiver.fillNextDay(this);
+        }
 
         webView = new WebView(this);
         setContentView(webView);
@@ -46,12 +54,18 @@ public class MainActivity extends Activity {
 
         @JavascriptInterface
         public void saveNote(String key, String value) {
-            notePrefs.edit().putString(key, value).apply();
+            notePrefs.edit()
+                    .putString(key, value)
+                    .putBoolean("manual_" + key, true)
+                    .apply();
         }
 
         @JavascriptInterface
         public void removeNote(String key) {
-            notePrefs.edit().remove(key).apply();
+            notePrefs.edit()
+                    .remove(key)
+                    .remove("manual_" + key)
+                    .apply();
         }
     }
 
