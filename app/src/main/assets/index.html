@@ -65,7 +65,10 @@ function render(){
   if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
   const noteKey=key(y,m,d);
   let saved=getSavedNote(noteKey),value=saved===null?defaultNote(y,m,d):saved;
-  if(saved!==null && window.AndroidStorage===undefined){/* 浏览器环境使用localStorage */}
+  // 将旧版本保存在localStorage里的备注迁移到Android持久化存储。
+  if(saved!==null && window.AndroidStorage && !AndroidStorage.getNote(noteKey)){
+    AndroidStorage.saveNote(noteKey,saved);
+  }
   if(value==='正常')normal++;else if(value==='休息')rest++;
   note.className='note '+(value==='正常'?'normal':value==='休息'?'rest':'other');note.textContent=value;
   cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell);
