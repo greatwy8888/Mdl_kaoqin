@@ -3,8 +3,8 @@
     <application
         android:allowBackup="true"
         android:label="考勤"
-        android:icon="@mipmap/ic_launcher"
-        android:roundIcon="@mipmap/ic_launcher"
+        android:icon="@drawable/kaoqin_icon"
+        android:roundIcon="@drawable/kaoqin_icon"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
