@@ -69,8 +69,8 @@ function render(){
   if(saved!==null && window.AndroidStorage && !AndroidStorage.getNote(noteKey)){
     AndroidStorage.saveNote(noteKey,saved);
   }
-  if(value==='正常')normal++;else if(value==='休息')rest++;
-  note.className='note '+(value==='正常'?'normal':value==='休息'?'rest':'other');note.textContent=value;
+  if(value==='正常')normal++;else if(value.includes('休息'))rest++;
+  note.className='note '+(value==='正常'?'normal':value.includes('休息')?'rest':'other');note.textContent=value;
   cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell);
  }
  normalCountEl.textContent=normal;restCountEl.textContent=rest;
