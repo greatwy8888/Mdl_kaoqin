@@ -22,32 +22,36 @@ public class AttendanceAlarmReceiver extends BroadcastReceiver {
         }
 
         if (ACTION_FILL.equals(intent.getAction())) {
-            fillNextDay(context);
+            // 每天凌晨1点填写“当天”的备注。
+            fillToday(context);
             scheduleNextAlarm(context);
         }
     }
 
-    public static void fillNextDay(Context context) {
-        Calendar tomorrow = Calendar.getInstance();
-        tomorrow.add(Calendar.DAY_OF_MONTH, 1);
+    public static void fillToday(Context context) {
+        Calendar today = Calendar.getInstance();
 
-        int year = tomorrow.get(Calendar.YEAR);
-        int month = tomorrow.get(Calendar.MONTH) + 1;
-        int day = tomorrow.get(Calendar.DAY_OF_MONTH);
+        int year = today.get(Calendar.YEAR);
+        int month = today.get(Calendar.MONTH) + 1;
+        int day = today.get(Calendar.DAY_OF_MONTH);
 
         String key = "kaoqin_note_" + year + "-" + String.format("%02d", month)
                 + "-" + String.format("%02d", day);
 
         SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 
-        // 已经有人工修改过的备注时，绝不覆盖。
-        if (prefs.getBoolean(MANUAL_PREFIX + key, false) || prefs.contains(key)) {
+        // 用户已经手动填写过的备注不覆盖。
+        if (prefs.getBoolean(MANUAL_PREFIX + key, false)) {
             return;
         }
 
-        // Java Calendar: Saturday = 7.
-        String value = tomorrow.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ? "休息" : "正常";
-        prefs.edit().putString(key, value).putBoolean(MANUAL_PREFIX + key, false).apply();
+        // 当天是周六填“休息”，其他日期一律填“正常”。
+        String value = today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ? "休息" : "正常";
+
+        prefs.edit()
+                .putString(key, value)
+                .putBoolean(MANUAL_PREFIX + key, false)
+                .apply();
     }
 
     public static void scheduleNextAlarm(Context context) {
