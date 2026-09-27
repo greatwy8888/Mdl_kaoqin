@@ -8,6 +8,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="false">
+        <!-- Launcher icon uses the uploaded 225x225 source image. -->
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait"
