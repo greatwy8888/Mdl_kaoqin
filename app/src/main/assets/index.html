@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<title>考勤</title>
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;min-height:100%;background:#f4f7fa;color:#1e2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
+body{padding-bottom:18px}.header{height:88px;background:#0b67b1;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.header img{height:76px;width:auto;max-width:94%;object-fit:contain}.controls{padding:12px 14px 10px;display:flex;gap:9px;background:#f4f7fa}
+select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 12px;font-size:16px;color:#263746;outline:none}
+.card{margin:0 10px;background:#fff;border-radius:15px;box-shadow:0 3px 14px rgba(26,48,70,.08);overflow:hidden}
+.week{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f9fb;border-bottom:1px solid #e7ebef}.week div{text-align:center;padding:10px 0;font-size:13px;color:#6d7781}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);padding:7px}
+.day{min-height:67px;border:1px solid #eef1f4;border-radius:9px;margin:2px;padding:6px 4px;position:relative;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
+.day.empty{border-color:transparent;background:transparent}.num{font-size:16px;line-height:22px;font-weight:600;color:#2d3a45}
+.note{margin-top:4px;max-width:100%;font-size:12px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note.normal{color:#222}.note.rest{color:#e53935}.note.other{color:#596672}.today{box-shadow:inset 0 0 0 2px #0b67b1}.today .num{color:#0b67b1}
+.hint{padding:10px 14px 0;text-align:center;color:#8a949d;font-size:12px}
+@media(max-width:370px){.day{min-height:60px}.num{font-size:15px}.note{font-size:11px}}
+</style>
+</head>
+<body>
+<header class="header"><img src="logo.svg" alt="麦德龙"></header>
+<div class="controls"><select id="year"></select><select id="month"></select></div>
+<section class="card"><div class="week"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div><div id="calendar" class="calendar"></div></section>
+<div class="hint">点击日期可添加或修改备注</div>
+<script>
+const START_YEAR=2024,END_YEAR=2033,yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),now=new Date();
+const pad=n=>String(n).padStart(2,'0'),key=(y,m,d)=>'kaoqin_note_'+y+'-'+pad(m)+'-'+pad(d);
+let currentYear=Math.min(END_YEAR,Math.max(START_YEAR,now.getFullYear())),currentMonth=now.getMonth()+1;
+for(let y=START_YEAR;y<=END_YEAR;y++)yearEl.add(new Option(y+'年',y));
+for(let m=1;m<=12;m++)monthEl.add(new Option(m+'月',m));
+yearEl.value=currentYear;monthEl.value=currentMonth;
+function defaultNote(y,m,d){return new Date(y,m-1,d).getDay()===6?'休息':'正常'}
+function render(){
+ const y=Number(yearEl.value),m=Number(monthEl.value);calendar.innerHTML='';
+ const offset=(new Date(y,m-1,1).getDay()+6)%7,days=new Date(y,m,0).getDate();
+ for(let i=0;i<offset;i++){let e=document.createElement('div');e.className='day empty';calendar.appendChild(e)}
+ for(let d=1;d<=days;d++){
+  let cell=document.createElement('div');cell.className='day',n=document.createElement('div'),note=document.createElement('div');
+  n.className='num';n.textContent=d;
+  if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
+  let saved=localStorage.getItem(key(y,m,d)),value=saved===null?defaultNote(y,m,d):saved;
+  note.className='note '+(value==='正常'?'normal':value==='休息'?'rest':'other');note.textContent=value;
+  cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell);
+ }
+}
+function editDay(y,m,d,current){
+ const result=prompt(y+'年'+m+'月'+d+'日备注',current||'');if(result===null)return;
+ const value=result.trim();if(value==='')localStorage.removeItem(key(y,m,d));else localStorage.setItem(key(y,m,d),value);render();
+}
+yearEl.onchange=render;monthEl.onchange=render;render();
+</script>
+</body>
+</html>
