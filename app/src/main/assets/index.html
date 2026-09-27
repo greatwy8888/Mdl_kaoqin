@@ -17,10 +17,9 @@ select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background
 .day.empty{border-color:transparent;background:transparent}.num{font-size:16px;line-height:22px;font-weight:600;color:#2d3a45}
 .note{margin-top:4px;max-width:100%;font-size:12px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .note.normal{color:#222}.note.rest{color:#e53935}.note.other{color:#596672}.today{box-shadow:inset 0 0 0 2px #0b67b1}.today .num{color:#0b67b1}
-.summary{margin:12px 10px 0;padding:13px 14px;background:#fff;border-radius:13px;box-shadow:0 3px 14px rgba(26,48,70,.07)}
+.summary{margin:12px 10px 0;padding:12px 14px;background:#fff;border-radius:13px;box-shadow:0 3px 14px rgba(26,48,70,.07)}
 .summary-title{text-align:center;font-size:14px;font-weight:600;color:#44515c;margin-bottom:8px}
-.summary-data{display:flex;justify-content:center;gap:28px;font-size:14px}
-.summary-item{display:flex;align-items:center;gap:5px}.summary-item.normal{color:#222}.summary-item.rest{color:#e53935}
+.summary-data{display:flex;justify-content:center;gap:28px;font-size:14px}.summary-item{display:flex;align-items:center;gap:5px}.summary-item.normal{color:#222}.summary-item.rest{color:#e53935}
 @media(max-width:370px){.day{min-height:60px}.num{font-size:15px}.note{font-size:11px}}
 </style>
 </head>
@@ -28,13 +27,7 @@ select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background
 <header class="header"><img src="logo.svg" alt="麦德龙"></header>
 <div class="controls"><select id="year"></select><select id="month"></select></div>
 <section class="card"><div class="week"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div><div id="calendar" class="calendar"></div></section>
-<section class="summary">
-  <div class="summary-title">本月汇总</div>
-  <div class="summary-data">
-    <div class="summary-item normal">正常 <strong id="normalCount">0</strong> 天</div>
-    <div class="summary-item rest">休息 <strong id="restCount">0</strong> 天</div>
-  </div>
-</section>
+<section class="summary"><div class="summary-title">本月汇总</div><div class="summary-data"><div class="summary-item normal">正常 <strong id="normalCount">0</strong> 天</div><div class="summary-item rest">休息 <strong id="restCount">0</strong> 天</div></div></section>
 <script>
 const START_YEAR=2024,END_YEAR=2033,yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),normalCountEl=document.getElementById('normalCount'),restCountEl=document.getElementById('restCount'),now=new Date();
 const pad=n=>String(n).padStart(2,'0'),key=(y,m,d)=>'kaoqin_note_'+y+'-'+pad(m)+'-'+pad(d);
@@ -44,15 +37,10 @@ for(let m=1;m<=12;m++)monthEl.add(new Option(m+'月',m));
 yearEl.value=currentYear;monthEl.value=currentMonth;
 
 function defaultNote(y,m,d){return new Date(y,m-1,d).getDay()===6?'休息':'正常'}
-
-function getSavedNote(noteKey){
-  if(window.AndroidStorage){
-    const nativeValue=AndroidStorage.getNote(noteKey);
-    if(nativeValue!==null)return nativeValue;
-  }
-  return localStorage.getItem(noteKey);
+function getSavedNote(k){
+  if(window.AndroidStorage){const v=AndroidStorage.getNote(k);if(v!==null)return v}
+  return localStorage.getItem(k)
 }
-
 function render(){
  const y=Number(yearEl.value),m=Number(monthEl.value);calendar.innerHTML='';
  const offset=(new Date(y,m-1,1).getDay()+6)%7,days=new Date(y,m,0).getDate();
@@ -60,35 +48,23 @@ function render(){
  for(let i=0;i<offset;i++){let e=document.createElement('div');e.className='day empty';calendar.appendChild(e)}
  for(let d=1;d<=days;d++){
   let cell=document.createElement('div');cell.className='day';
-  let n=document.createElement('div'),note=document.createElement('div');
-  n.className='num';n.textContent=d;
+  let n=document.createElement('div'),note=document.createElement('div');n.className='num';n.textContent=d;
   if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
-  const noteKey=key(y,m,d);
-  let saved=getSavedNote(noteKey),value=saved===null?defaultNote(y,m,d):saved;
-  // 将旧版本保存在localStorage里的备注迁移到Android持久化存储。
-  if(saved!==null && window.AndroidStorage && !AndroidStorage.getNote(noteKey)){
-    AndroidStorage.saveNote(noteKey,saved);
-  }
+  const k=key(y,m,d);let saved=getSavedNote(k),value=saved===null?defaultNote(y,m,d):saved;
+  if(saved!==null&&window.AndroidStorage&&!AndroidStorage.getNote(k))AndroidStorage.saveNote(k,saved);
   if(value==='正常')normal++;else if(value.includes('休息'))rest++;
   note.className='note '+(value==='正常'?'normal':value.includes('休息')?'rest':'other');note.textContent=value;
   cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell);
  }
  normalCountEl.textContent=normal;restCountEl.textContent=rest;
 }
-
 function editDay(y,m,d,current){
  const result=prompt(y+'年'+m+'月'+d+'日备注',current||'');if(result===null)return;
- const value=result.trim(),noteKey=key(y,m,d);
- if(value===''){
-   if(window.AndroidStorage)AndroidStorage.removeNote(noteKey);
-   localStorage.removeItem(noteKey);
- }else{
-   if(window.AndroidStorage)AndroidStorage.saveNote(noteKey,value);
-   localStorage.setItem(noteKey,value);
- }
+ const value=result.trim(),k=key(y,m,d);
+ if(value===''){if(window.AndroidStorage)AndroidStorage.removeNote(k);localStorage.removeItem(k)}
+ else{if(window.AndroidStorage)AndroidStorage.saveNote(k,value);localStorage.setItem(k,value)}
  render();
 }
-
 yearEl.onchange=render;monthEl.onchange=render;render();
 </script>
 </body>
