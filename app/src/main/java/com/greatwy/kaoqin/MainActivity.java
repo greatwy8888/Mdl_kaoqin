@@ -22,10 +22,10 @@ public class MainActivity extends Activity {
 
         notePrefs = getSharedPreferences("kaoqin_notes", Context.MODE_PRIVATE);
 
-        // 每天凌晨1点自动处理下一天；如果错过了闹钟，今天1点以后打开APP时补一次。
+        // 每天凌晨1点填写当天备注；如果错过闹钟，1点以后打开APP时补填当天。
         AttendanceAlarmReceiver.scheduleNextAlarm(this);
         if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 1) {
-            AttendanceAlarmReceiver.fillNextDay(this);
+            AttendanceAlarmReceiver.fillToday(this);
         }
 
         webView = new WebView(this);
