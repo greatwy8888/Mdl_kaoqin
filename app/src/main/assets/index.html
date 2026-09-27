@@ -32,13 +32,18 @@ select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background
 const START_YEAR=2024,END_YEAR=2033,yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),normalCountEl=document.getElementById('normalCount'),restCountEl=document.getElementById('restCount'),now=new Date();
 const pad=n=>String(n).padStart(2,'0'),key=(y,m,d)=>'kaoqin_note_'+y+'-'+pad(m)+'-'+pad(d);
 let currentYear=Math.min(END_YEAR,Math.max(START_YEAR,now.getFullYear())),currentMonth=now.getMonth()+1;
-for(let y=START_YEAR;y<=END_YEAR;y++)yearEl.add(new Option(y+'年',y));
-for(let m=1;m<=12;m++)monthEl.add(new Option(m+'月',m));
+for(let y=START_YEAR;y<=END_YEAR;y++){const o=document.createElement('option');o.value=y;o.textContent=y+'年';yearEl.appendChild(o);}
+for(let m=1;m<=12;m++){const o=document.createElement('option');o.value=m;o.textContent=m+'月';monthEl.appendChild(o);}
 yearEl.value=currentYear;monthEl.value=currentMonth;
 
 function getSavedNote(k){
-  if(window.AndroidStorage){const v=AndroidStorage.getNote(k);if(v!==null)return v}
-  return localStorage.getItem(k)
+  try{
+    if(window.AndroidStorage){
+      const v=window.AndroidStorage.getNote(k);
+      if(v!==null && v!==undefined)return v;
+    }
+  }catch(e){}
+  try{return localStorage.getItem(k)}catch(e){return null}
 }
 function render(){
  const y=Number(yearEl.value),m=Number(monthEl.value);calendar.innerHTML='';
@@ -50,7 +55,11 @@ function render(){
   let n=document.createElement('div'),note=document.createElement('div');n.className='num';n.textContent=d;
   if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
   const k=key(y,m,d);let saved=getSavedNote(k),value=saved===null?'':saved;
-  if(saved!==null&&window.AndroidStorage&&!AndroidStorage.getNote(k))AndroidStorage.saveNote(k,saved);
+  try{
+    if(saved!==null&&window.AndroidStorage&&!window.AndroidStorage.getNote(k)){
+      window.AndroidStorage.saveNote(k,saved);
+    }
+  }catch(e){}
   if(value==='正常')normal++;else if(value.includes('休息'))rest++;
   note.className='note '+(value==='正常'?'normal':value.includes('休息')?'rest':'other');note.textContent=value;
   cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell);
@@ -64,7 +73,10 @@ function editDay(y,m,d,current){
  else{if(window.AndroidStorage)AndroidStorage.saveNote(k,value);localStorage.setItem(k,value)}
  render();
 }
-yearEl.onchange=render;monthEl.onchange=render;render();
+yearEl.onchange=render;
+monthEl.onchange=render;
+document.addEventListener('DOMContentLoaded',render);
+if(document.readyState!=='loading')render();
 </script>
 </body>
 </html>
