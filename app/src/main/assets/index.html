@@ -7,8 +7,7 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#f4f7fa;color:#1e2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
-body{padding-bottom:18px}.header{height:88px;background:#0b67b1;display:flex;align-items:center;justify-content:center;overflow:hidden}
-.header img{height:76px;width:auto;max-width:94%;object-fit:contain}.controls{padding:12px 14px 10px;display:flex;gap:9px;background:#f4f7fa}
+body{padding-bottom:18px}.header{height:88px;background:#0b67b1 url('top_banner.png') center center/cover no-repeat;overflow:hidden}.controls{padding:12px 14px 10px;display:flex;gap:9px;background:#f4f7fa}
 select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 12px;font-size:16px;color:#263746;outline:none}
 .card{margin:0 10px;background:#fff;border-radius:15px;box-shadow:0 3px 14px rgba(26,48,70,.08);overflow:hidden}
 .week{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f9fb;border-bottom:1px solid #e7ebef}.week div{text-align:center;padding:10px 0;font-size:13px;color:#6d7781}
@@ -24,7 +23,7 @@ select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background
 </style>
 </head>
 <body>
-<header class="header"><img src="logo.svg" alt="麦德龙"></header>
+<header class="header" aria-label="麦德龙"></header>
 <div class="controls"><select id="year"></select><select id="month"></select></div>
 <section class="card"><div class="week"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div><div id="calendar" class="calendar"></div></section>
 <section class="summary"><div class="summary-title">本月汇总</div><div class="summary-data"><div class="summary-item normal">正常 <strong id="normalCount">0</strong> 天</div><div class="summary-item rest">休息 <strong id="restCount">0</strong> 天</div></div></section>
