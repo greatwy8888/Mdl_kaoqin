@@ -36,7 +36,6 @@ for(let y=START_YEAR;y<=END_YEAR;y++)yearEl.add(new Option(y+'年',y));
 for(let m=1;m<=12;m++)monthEl.add(new Option(m+'月',m));
 yearEl.value=currentYear;monthEl.value=currentMonth;
 
-function defaultNote(y,m,d){return new Date(y,m-1,d).getDay()===6?'休息':'正常'}
 function getSavedNote(k){
   if(window.AndroidStorage){const v=AndroidStorage.getNote(k);if(v!==null)return v}
   return localStorage.getItem(k)
@@ -50,7 +49,7 @@ function render(){
   let cell=document.createElement('div');cell.className='day';
   let n=document.createElement('div'),note=document.createElement('div');n.className='num';n.textContent=d;
   if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
-  const k=key(y,m,d);let saved=getSavedNote(k),value=saved===null?defaultNote(y,m,d):saved;
+  const k=key(y,m,d);let saved=getSavedNote(k),value=saved===null?'':saved;
   if(saved!==null&&window.AndroidStorage&&!AndroidStorage.getNote(k))AndroidStorage.saveNote(k,saved);
   if(value==='正常')normal++;else if(value.includes('休息'))rest++;
   note.className='note '+(value==='正常'?'normal':value.includes('休息')?'rest':'other');note.textContent=value;
