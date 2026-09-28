@@ -45,8 +45,8 @@ public class AttendanceAlarmReceiver extends BroadcastReceiver {
             return;
         }
 
-        // 当天是周六填“休息”，其他日期一律填“正常”。
-        String value = today.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ? "休息" : "正常";
+        // 当天是周一填“休息”，其他日期一律填“正常”。
+        String value = today.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY ? "休息" : "正常";
 
         prefs.edit()
                 .putString(key, value)
