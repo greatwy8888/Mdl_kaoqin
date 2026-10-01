@@ -61,12 +61,14 @@ public class MainActivity extends Activity {
             notePrefs.edit()
                     .putString(key, value)
                     .putBoolean("manual_" + key, true)
+                    .putBoolean("multi_manual_" + key.replace("multi_note_", ""), key.startsWith("multi_note_"))
                     .apply();
         }
 
         @JavascriptInterface
         public void removeNote(String key) {
-            notePrefs.edit().remove(key).remove("manual_" + key).apply();
+            notePrefs.edit().remove(key).remove("manual_" + key)
+                    .remove("multi_manual_" + key.replace("multi_note_", "")).apply();
         }
 
         @JavascriptInterface
