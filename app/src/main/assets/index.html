@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
-<title>考勤</title>
+<title>考勤·多人版</title>
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#0b67b1;color:#1e2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
@@ -11,77 +11,69 @@ body{padding-bottom:18px}.header{height:88px;background:#0b67b1 url('top_banner.
 .page-bg{position:relative;min-height:calc(100vh - 88px);background:#0b67b1;overflow:hidden}
 .page-bg:before{content:"";position:absolute;inset:0;background:url('logo.svg') center 46%/min(72vw,360px) auto no-repeat;opacity:.14;pointer-events:none;filter:brightness(1.18)}
 .page-bg>*{position:relative;z-index:1}
-.controls{padding:12px 14px 10px;display:flex;gap:9px;background:transparent}
-select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 12px;font-size:16px;color:#263746;outline:none}
+.topbar{padding:10px 12px 4px;display:flex;gap:8px}.person-select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 10px;font-size:16px;color:#263746;outline:none}.manage-btn{height:42px;padding:0 13px;border:0;border-radius:11px;background:#fff;color:#0b67b1;font-size:14px;font-weight:600}
+.controls{padding:7px 14px 10px;display:flex;gap:9px}.controls select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 12px;font-size:16px;color:#263746;outline:none}
 .card{margin:0 10px;background:#fff;border-radius:15px;box-shadow:0 3px 14px rgba(26,48,70,.08);overflow:hidden}
 .week{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f9fb;border-bottom:1px solid #e7ebef}.week div{text-align:center;padding:10px 0;font-size:13px;color:#6d7781}
-.calendar{display:grid;grid-template-columns:repeat(7,1fr);padding:7px}
-.day{min-height:67px;border:1px solid #eef1f4;border-radius:9px;margin:2px;padding:6px 4px;position:relative;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}
-.day.empty{border-color:transparent;background:transparent}.num{font-size:16px;line-height:22px;font-weight:600;color:#2d3a45}
-.note{margin-top:4px;max-width:100%;font-size:12px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.note.normal{color:#222}.note.rest{color:#e53935}.note.other{color:#596672}.today{box-shadow:inset 0 0 0 2px #0b67b1}.today .num{color:#0b67b1}
-.summary{margin:12px 10px 0;padding:12px 14px;background:#fff;border-radius:13px;box-shadow:0 3px 14px rgba(26,48,70,.07)}
-.summary-title{text-align:center;font-size:14px;font-weight:600;color:#44515c;margin-bottom:8px}
-.summary-data{display:flex;justify-content:center;gap:28px;font-size:14px}.summary-item{display:flex;align-items:center;gap:5px}.summary-item.normal{color:#222}.summary-item.rest{color:#e53935}
-@media(max-width:370px){.day{min-height:60px}.num{font-size:15px}.note{font-size:11px}}
+.calendar{display:grid;grid-template-columns:repeat(7,1fr);padding:7px}.day{min-height:67px;border:1px solid #eef1f4;border-radius:9px;margin:2px;padding:6px 4px;position:relative;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:flex-start}.day.empty{border-color:transparent;background:transparent}.num{font-size:16px;line-height:22px;font-weight:600;color:#2d3a45}.note{margin-top:4px;max-width:100%;font-size:12px;line-height:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.note.normal{color:#222}.note.rest{color:#e53935}.note.other{color:#596672}.today{box-shadow:inset 0 0 0 2px #0b67b1}.today .num{color:#0b67b1}
+.summary{margin:12px 10px 0;padding:12px 14px;background:#fff;border-radius:13px;box-shadow:0 3px 14px rgba(26,48,70,.07)}.summary-title{text-align:center;font-size:14px;font-weight:600;color:#44515c;margin-bottom:8px}.summary-data{display:flex;justify-content:center;gap:28px;font-size:14px}.summary-item{display:flex;align-items:center;gap:5px}.summary-item.normal{color:#222}.summary-item.rest{color:#e53935}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:20;display:none;align-items:flex-end}.panel{width:100%;max-height:82vh;overflow:auto;background:#fff;border-radius:18px 18px 0 0;padding:16px}.panel h3{margin:0 0 12px;text-align:center}.person-row{display:flex;align-items:center;gap:8px;padding:11px 0;border-bottom:1px solid #edf0f2}.person-name{flex:1;font-size:16px}.small-btn{border:0;border-radius:9px;padding:8px 10px;background:#eef5fb;color:#0b67b1;font-size:13px}.delete-btn{background:#fff0f0;color:#d33}.form input{width:100%;height:42px;border:1px solid #ccd5dd;border-radius:10px;padding:0 11px;font-size:16px}.days{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0}.days label{border:1px solid #d9e0e6;border-radius:9px;padding:9px 5px;text-align:center;font-size:14px}.days input{margin-right:4px}.actions{display:flex;gap:8px}.actions button{flex:1;height:42px;border:0;border-radius:10px;font-size:15px}.primary{background:#0b67b1;color:#fff}.secondary{background:#eef1f4;color:#34424d}
+@media(max-width:370px){.day{min-height:60px}.num{font-size:15px}.note{font-size:11px}.days{grid-template-columns:repeat(3,1fr)}}
 </style>
 </head>
 <body>
 <header class="header" aria-label="麦德龙"></header>
 <div class="page-bg">
+<div class="topbar"><select id="person" class="person-select"></select><button id="manage" class="manage-btn">人员管理</button></div>
 <div class="controls"><select id="year"></select><select id="month"></select></div>
 <section class="card"><div class="week"><div>一</div><div>二</div><div>三</div><div>四</div><div>五</div><div>六</div><div>日</div></div><div id="calendar" class="calendar"></div></section>
 <section class="summary"><div class="summary-title">本月汇总</div><div class="summary-data"><div class="summary-item normal">正常 <strong id="normalCount">0</strong> 天</div><div class="summary-item rest">休息 <strong id="restCount">0</strong> 天</div></div></section>
 </div>
+
+<div id="modal" class="modal"><div class="panel">
+<h3>人员管理</h3><div id="peopleList"></div>
+<div class="form"><input id="personName" maxlength="30" placeholder="输入人员姓名"></div>
+<div class="days">
+<label><input type="checkbox" value="1">周日</label><label><input type="checkbox" value="2">周一</label><label><input type="checkbox" value="3">周二</label><label><input type="checkbox" value="4">周三</label><label><input type="checkbox" value="5">周四</label><label><input type="checkbox" value="6">周五</label><label><input type="checkbox" value="7">周六</label>
+</div>
+<div class="actions"><button class="secondary" id="cancel">关闭</button><button class="primary" id="save">添加人员</button></div>
+</div></div>
+
 <script>
-const START_YEAR=2024,END_YEAR=2033,yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),normalCountEl=document.getElementById('normalCount'),restCountEl=document.getElementById('restCount'),now=new Date();
-const pad=n=>String(n).padStart(2,'0'),key=(y,m,d)=>'kaoqin_note_'+y+'-'+pad(m)+'-'+pad(d);
-let currentYear=Math.min(END_YEAR,Math.max(START_YEAR,now.getFullYear())),currentMonth=now.getMonth()+1;
-for(let y=START_YEAR;y<=END_YEAR;y++){const o=document.createElement('option');o.value=y;o.textContent=y+'年';yearEl.appendChild(o);}
-for(let m=1;m<=12;m++){const o=document.createElement('option');o.value=m;o.textContent=m+'月';monthEl.appendChild(o);}
+const START_YEAR=2024,END_YEAR=2033;
+const yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),normalCountEl=document.getElementById('normalCount'),restCountEl=document.getElementById('restCount'),personEl=document.getElementById('person'),modal=document.getElementById('modal'),peopleList=document.getElementById('peopleList'),nameEl=document.getElementById('personName'),saveBtn=document.getElementById('save'),now=new Date();
+const pad=n=>String(n).padStart(2,'0');
+let people=[],editingId=null,currentYear=Math.min(END_YEAR,Math.max(START_YEAR,now.getFullYear())),currentMonth=now.getMonth()+1;
+const noteKey=(id,y,m,d)=>'multi_note_'+id+'_'+y+'-'+pad(m)+'-'+pad(d);
+for(let y=START_YEAR;y<=END_YEAR;y++){let o=document.createElement('option');o.value=y;o.textContent=y+'年';yearEl.appendChild(o)}
+for(let m=1;m<=12;m++){let o=document.createElement('option');o.value=m;o.textContent=m+'月';monthEl.appendChild(o)}
 yearEl.value=currentYear;monthEl.value=currentMonth;
 
-function getSavedNote(k){
-  try{
-    if(window.AndroidStorage){
-      const v=window.AndroidStorage.getNote(k);
-      if(v!==null && v!==undefined)return v;
-    }
-  }catch(e){}
-  try{return localStorage.getItem(k)}catch(e){return null}
-}
+function loadPeople(){try{people=JSON.parse(AndroidStorage.getPeople()||'[]')}catch(e){people=[]} if(!Array.isArray(people))people=[]; renderPeopleSelect(); if(!people.length){render();return} let saved=localStorage.getItem('multi_selected_person');let exists=people.some(p=>p.id===saved);personEl.value=exists?saved:people[0].id;localStorage.setItem('multi_selected_person',personEl.value);render()}
+function renderPeopleSelect(){personEl.innerHTML='';people.forEach(p=>{let o=document.createElement('option');o.value=p.id;o.textContent=p.name;personEl.appendChild(o)});if(!people.length){let o=document.createElement('option');o.textContent='请先添加人员';o.value='';personEl.appendChild(o)}}
+function getNote(k){try{let v=AndroidStorage.getNote(k);if(v!==null&&v!==undefined)return v}catch(e){}try{return localStorage.getItem(k)}catch(e){return null}}
+function saveNote(k,v){try{AndroidStorage.saveNote(k,v)}catch(e){}try{localStorage.setItem(k,v)}catch(e){}}
+function removeNote(k){try{AndroidStorage.removeNote(k)}catch(e){}try{localStorage.removeItem(k)}catch(e){}}
 function render(){
- const y=Number(yearEl.value),m=Number(monthEl.value);calendar.innerHTML='';
- const offset=(new Date(y,m-1,1).getDay()+6)%7,days=new Date(y,m,0).getDate();
- let normal=0,rest=0;
+ const y=Number(yearEl.value),m=Number(monthEl.value),id=personEl.value;calendar.innerHTML='';
+ if(!id){normalCountEl.textContent=0;restCountEl.textContent=0;return}
+ const offset=(new Date(y,m-1,1).getDay()+6)%7,days=new Date(y,m,0).getDate();let normal=0,rest=0;
  for(let i=0;i<offset;i++){let e=document.createElement('div');e.className='day empty';calendar.appendChild(e)}
- for(let d=1;d<=days;d++){
-  let cell=document.createElement('div');cell.className='day';
-  let n=document.createElement('div'),note=document.createElement('div');n.className='num';n.textContent=d;
-  if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
-  const k=key(y,m,d);let saved=getSavedNote(k),value=saved===null?'':saved;
-  try{
-    if(saved!==null&&window.AndroidStorage&&!window.AndroidStorage.getNote(k)){
-      window.AndroidStorage.saveNote(k,saved);
-    }
-  }catch(e){}
-  if(value==='正常')normal++;else if(value.includes('休息'))rest++;
-  note.className='note '+(value==='正常'?'normal':value.includes('休息')?'rest':'other');note.textContent=value;
-  cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell);
- }
+ for(let d=1;d<=days;d++){let cell=document.createElement('div');cell.className='day';let n=document.createElement('div'),note=document.createElement('div');n.className='num';n.textContent=d;if(y===now.getFullYear()&&m===now.getMonth()+1&&d===now.getDate())cell.classList.add('today');
+ const k=noteKey(id,y,m,d),value=getNote(k)||'';if(value==='正常')normal++;else if(value.includes('休息'))rest++;note.className='note '+(value==='正常'?'normal':value.includes('休息')?'rest':'other');note.textContent=value;cell.append(n,note);cell.onclick=()=>editDay(y,m,d,value);calendar.appendChild(cell)}
  normalCountEl.textContent=normal;restCountEl.textContent=rest;
 }
-function editDay(y,m,d,current){
- const result=prompt(y+'年'+m+'月'+d+'日备注',current||'');if(result===null)return;
- const value=result.trim(),k=key(y,m,d);
- if(value===''){if(window.AndroidStorage)AndroidStorage.removeNote(k);localStorage.removeItem(k)}
- else{if(window.AndroidStorage)AndroidStorage.saveNote(k,value);localStorage.setItem(k,value)}
- render();
-}
-yearEl.onchange=render;
-monthEl.onchange=render;
-document.addEventListener('DOMContentLoaded',render);
-if(document.readyState!=='loading')render();
+function editDay(y,m,d,current){let r=prompt(y+'年'+m+'月'+d+'日备注',current||'');if(r===null)return;let v=r.trim(),k=noteKey(personEl.value,y,m,d);if(v==='')removeNote(k);else saveNote(k,v);render()}
+function openManage(){editingId=null;nameEl.value='';document.querySelectorAll('.days input').forEach(x=>x.checked=false);saveBtn.textContent='添加人员';renderPeopleList();modal.style.display='flex'}
+function renderPeopleList(){peopleList.innerHTML='';people.forEach(p=>{let row=document.createElement('div');row.className='person-row';let n=document.createElement('div');n.className='person-name';n.textContent=p.name+'（休息：'+(p.restDays||[]).map(d=>['','周日','周一','周二','周三','周四','周五','周六'][d]).join('、')+'）';let e=document.createElement('button');e.className='small-btn';e.textContent='编辑';e.onclick=()=>editPerson(p);let del=document.createElement('button');del.className='small-btn delete-btn';del.textContent='删除';del.onclick=()=>deletePerson(p);row.append(n,e,del);peopleList.appendChild(row)})}
+function editPerson(p){editingId=p.id;nameEl.value=p.name;document.querySelectorAll('.days input').forEach(x=>x.checked=(p.restDays||[]).includes(Number(x.value)));saveBtn.textContent='保存修改'}
+function editPersonFromNew(){}
+function savePerson(){let name=nameEl.value.trim();if(!name){alert('请输入人员姓名');return}let rest=[];document.querySelectorAll('.days input:checked').forEach(x=>rest.push(Number(x.value)));let id=editingId||('p_'+Date.now()+'_'+Math.random().toString(36).slice(2,8));try{AndroidStorage.savePerson(id,name,JSON.stringify(rest))}catch(e){alert('保存失败');return}loadPeople();editingId=null;nameEl.value='';document.querySelectorAll('.days input').forEach(x=>x.checked=false);saveBtn.textContent='添加人员';renderPeopleList()}
+function deletePerson(p){if(!confirm('确定删除“'+p.name+'”及其全部考勤记录吗？'))return;try{AndroidStorage.deletePerson(p.id)}catch(e){};loadPeople();renderPeopleList()}
+personEl.onchange=()=>{localStorage.setItem('multi_selected_person',personEl.value);render()};
+yearEl.onchange=render;monthEl.onchange=render;document.getElementById('manage').onclick=openManage;document.getElementById('cancel').onclick=()=>modal.style.display='none';saveBtn.onclick=savePerson;
+modal.onclick=e=>{if(e.target===modal)modal.style.display='none'};
+document.addEventListener('DOMContentLoaded',loadPeople);if(document.readyState!=='loading')loadPeople();
 </script>
 </body>
 </html>
