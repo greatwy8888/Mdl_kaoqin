@@ -77,7 +77,7 @@ public class MainActivity extends Activity {
         }
 
         @JavascriptInterface
-        public void savePerson(String id, String name, String restDays) {
+        public boolean savePerson(String id, String name, String restDays) {
             try {
                 JSONArray arr = new JSONArray(getPeople());
                 JSONArray out = new JSONArray();
@@ -99,12 +99,14 @@ public class MainActivity extends Activity {
                     out.put(p);
                 }
                 peoplePrefs.edit().putString("people", out.toString()).apply();
+                return true;
             } catch (Exception ignored) {
+                return false;
             }
         }
 
         @JavascriptInterface
-        public void deletePerson(String id) {
+        public boolean deletePerson(String id) {
             try {
                 JSONArray arr = new JSONArray(getPeople());
                 JSONArray out = new JSONArray();
@@ -120,7 +122,9 @@ public class MainActivity extends Activity {
                     if (key.startsWith(prefix) || key.startsWith("multi_manual_" + id + "_")) e.remove(key);
                 }
                 e.apply();
+                return true;
             } catch (Exception ignored) {
+                return false;
             }
         }
     }
