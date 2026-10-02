@@ -18,7 +18,7 @@ public class AttendanceAlarmReceiver extends BroadcastReceiver {
   String date=y+"-"+String.format("%02d",m)+"-"+String.format("%02d",d);SharedPreferences n=c.getSharedPreferences(PREFS,Context.MODE_PRIVATE),p=c.getSharedPreferences(PEOPLE_PREFS,Context.MODE_PRIVATE);
   try{JSONArray arr=new JSONArray(p.getString("people","[]"));SharedPreferences.Editor e=n.edit();
    for(int i=0;i<arr.length();i++){JSONObject x=arr.getJSONObject(i);String id=x.optString("id");if(id.isEmpty())continue;String key="multi_note_"+id+"_"+date;if(n.getBoolean("manual_"+key,false))continue;
-    boolean rest=false;JSONArray ws=new JSONArray(x.optString("restWeekdays","[]"));for(int j=0;j<ws.length();j++)if(w==ws.optInt(j))rest=true;e.putString(key,rest?"休息":"正常").putBoolean("manual_"+key,false);}
+    boolean rest=false; String raw=x.optString("restWeekdays","[]"); try{ JSONArray ws=new JSONArray(raw); for(int j=0;j<ws.length();j++) if(w==ws.optInt(j)) {rest=true;break;} }catch(Exception ignored){ }e.putString(key,rest?"休息":"正常").putBoolean("manual_"+key,false);}
    e.apply();
   }catch(Exception ignored){}
  }
