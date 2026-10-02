@@ -7,11 +7,11 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#0b67b1;color:#1e2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
-body{padding-bottom:18px}.header{height:88px;background:#0b67b1;overflow:hidden;position:relative;display:flex;align-items:center;justify-content:center}.header-logo{display:block;width:100%;height:100%;object-fit:contain;object-position:center}.header:after{content:"";position:absolute;inset:0;background:rgba(11,103,177,.03);pointer-events:none}
+body{padding-bottom:18px}.header{height:88px;background:#0b67b1 url('top_banner.png') center center/cover no-repeat;overflow:hidden}
 .page-bg{position:relative;min-height:calc(100vh - 88px);background:#0b67b1;overflow:hidden}
 .page-bg:before{content:"";position:absolute;inset:0;background:url('logo.svg') center 46%/min(72vw,360px) auto no-repeat;opacity:.14;pointer-events:none;filter:brightness(1.18)}
 .page-bg>*{position:relative;z-index:1}
-.topbar{padding:10px 12px 4px;display:flex;gap:8px}.person-select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 10px;font-size:16px;color:#263746;outline:none}.manage-btn{height:42px;padding:0 15px;border:1px solid #064c82;border-radius:11px;background:linear-gradient(#ffffff 0%,#f6f9fc 42%,#c9d8e5 100%);color:#075a98;font-size:14px;font-weight:800;letter-spacing:.3px;box-shadow:0 5px 0 #043f6c,0 8px 13px rgba(0,0,0,.28),inset 0 1px 0 #fff;transform:translateY(0);transition:transform .09s,box-shadow .09s,filter .09s}.manage-btn:before{content:"";position:absolute}.manage-btn:active{transform:translateY(5px);box-shadow:0 0 0 #043f6c,0 3px 6px rgba(0,0,0,.2),inset 0 1px 0 #fff;filter:brightness(.96)}.manage-btn:focus-visible{outline:3px solid rgba(255,255,255,.7);outline-offset:2px}
+.topbar{padding:12px 14px 4px;display:flex;gap:9px}.person-select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 10px;font-size:16px;color:#263746;outline:none}.manage-btn{height:42px;padding:0 14px;border:1px solid #d5dce3;border-radius:11px;background:#fff;color:#0b67b1;font-size:14px;font-weight:600;white-space:nowrap}.manage-btn:active{background:#f2f7fb}.manage-btn:focus-visible{outline:2px solid rgba(255,255,255,.9);outline-offset:2px}
 .controls{padding:7px 14px 10px;display:flex;gap:9px}.controls select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background:#fff;padding:0 12px;font-size:16px;color:#263746;outline:none}
 .card{margin:0 10px;background:#fff;border-radius:15px;box-shadow:0 3px 14px rgba(26,48,70,.08);overflow:hidden}
 .week{display:grid;grid-template-columns:repeat(7,1fr);background:#f7f9fb;border-bottom:1px solid #e7ebef}.week div{text-align:center;padding:10px 0;font-size:13px;color:#6d7781}
@@ -22,7 +22,7 @@ body{padding-bottom:18px}.header{height:88px;background:#0b67b1;overflow:hidden;
 </style>
 </head>
 <body>
-<header class="header" aria-label="麦德龙"><img class="header-logo" src="logo.svg" alt="麦德龙"></header>
+<header class="header" aria-label="麦德龙"></header>
 <div class="page-bg">
 <div class="topbar"><select id="person" class="person-select"></select><button id="manage" class="manage-btn">人员管理</button></div>
 <div class="controls"><select id="year"></select><select id="month"></select></div>
