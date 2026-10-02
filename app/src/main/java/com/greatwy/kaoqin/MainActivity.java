@@ -26,7 +26,16 @@ public class MainActivity extends Activity {
         WebSettings s=webView.getSettings(); s.setJavaScriptEnabled(true); s.setDomStorageEnabled(true); s.setAllowFileAccess(true); s.setSupportZoom(false); s.setBuiltInZoomControls(false); s.setDisplayZoomControls(false); s.setTextZoom(100);
         webView.addJavascriptInterface(new NoteStorage(),"AndroidStorage"); webView.setWebViewClient(new WebViewClient()); webView.setWebChromeClient(new WebChromeClient()); webView.loadUrl("file:///android_asset/index.html");
     }
-    private void clearMultiNotesOnce(){\n        if(notePrefs.getBoolean("multi_notes_cleared_v2",false)) return;\n        SharedPreferences.Editor e=notePrefs.edit();\n        for(String k: notePrefs.getAll().keySet()){\n            if(k.startsWith("multi_note_") || k.startsWith("manual_multi_note_")) e.remove(k);\n        }\n        e.putBoolean("multi_notes_cleared_v2",true).apply();\n    }\n\n    private class NoteStorage {
+    private void clearMultiNotesOnce(){
+        if(notePrefs.getBoolean("multi_notes_cleared_v2",false)) return;
+        SharedPreferences.Editor e=notePrefs.edit();
+        for(String k: notePrefs.getAll().keySet()){
+            if(k.startsWith("multi_note_") || k.startsWith("manual_multi_note_")) e.remove(k);
+        }
+        e.putBoolean("multi_notes_cleared_v2",true).apply();
+    }
+
+    private class NoteStorage {
         @JavascriptInterface public String getNote(String key){return notePrefs.contains(key)?notePrefs.getString(key,""):null;}
         @JavascriptInterface public void saveNote(String key,String value){notePrefs.edit().putString(key,value).putBoolean("manual_"+key,true).apply();}
         @JavascriptInterface public void removeNote(String key){notePrefs.edit().remove(key).remove("manual_"+key).apply();}
