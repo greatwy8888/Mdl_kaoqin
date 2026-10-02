@@ -20,6 +20,7 @@ public class MainActivity extends Activity {
         super.onCreate(savedInstanceState);
         notePrefs=getSharedPreferences("kaoqin_notes",Context.MODE_PRIVATE);
         peoplePrefs=getSharedPreferences("kaoqin_multi_people",Context.MODE_PRIVATE);
+        clearMultiNotesOnce();
         AttendanceAlarmReceiver.scheduleNextAlarm(this);
         if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY)>=1) AttendanceAlarmReceiver.fillToday(this);
         webView=new WebView(this); setContentView(webView);
