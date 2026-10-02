@@ -7,7 +7,7 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
 html,body{margin:0;min-height:100%;background:#0b67b1;color:#1e2933;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif}
-body{padding-bottom:18px}.header{height:88px;background:#0b67b1 url('top_banner.png') center center/contain no-repeat;overflow:hidden}
+body{padding-bottom:18px}.header{width:100%;background:#0b67b1;overflow:hidden;line-height:0}.header img{display:block;width:100%;height:auto;max-width:none}
 .page-bg{position:relative;min-height:calc(100vh - 88px);background:#0b67b1;overflow:hidden}
 .page-bg:before{content:"";position:absolute;inset:0;background:url('logo.svg') center 46%/min(72vw,360px) auto no-repeat;opacity:.14;pointer-events:none;filter:brightness(1.18)}
 .page-bg>*{position:relative;z-index:1}
@@ -25,7 +25,7 @@ body{padding-bottom:18px}.header{height:88px;background:#0b67b1 url('top_banner.
 </style>
 </head>
 <body>
-<header class="header" aria-label="麦德龙"></header>
+<header class="header" aria-label="麦德龙"><img src="top_banner.png" alt="麦德龙"></header>
 <div class="page-bg">
 <div class="topbar"><select id="person" class="person-select"></select><button id="manage" class="manage-btn">人员管理</button></div>
 <div class="controls"><select id="year"></select><select id="month"></select></div>
