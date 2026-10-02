@@ -14,7 +14,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 import java.util.Iterator;
 
-public class MainActivity {
+public class MainActivity extends Activity {
     private WebView webView; private SharedPreferences notePrefs, peoplePrefs;
     @Override public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
