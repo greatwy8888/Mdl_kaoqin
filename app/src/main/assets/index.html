@@ -34,7 +34,7 @@ select{flex:1;height:42px;border:1px solid #d5dce3;border-radius:11px;background
 <section class="summary"><div class="summary-title">本月汇总</div><div class="summary-data"><div class="summary-item normal">正常 <strong id="normalCount">0</strong> 天</div><div class="summary-item rest">休息 <strong id="restCount">0</strong> 天</div></div></section>
 </div>
 <script>
-const START_YEAR=2024,END_YEAR=2033,yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),normalCountEl=document.getElementById('normalCount'),restCountEl=document.getElementById('restCount'),now=new Date();
+const START_YEAR=2026,END_YEAR=2035,yearEl=document.getElementById('year'),monthEl=document.getElementById('month'),calendar=document.getElementById('calendar'),normalCountEl=document.getElementById('normalCount'),restCountEl=document.getElementById('restCount'),now=new Date();
 const pad=n=>String(n).padStart(2,'0'),key=(y,m,d)=>'kaoqin_note_'+y+'-'+pad(m)+'-'+pad(d);
 let currentYear=Math.min(END_YEAR,Math.max(START_YEAR,now.getFullYear())),currentMonth=now.getMonth()+1;
 for(let y=START_YEAR;y<=END_YEAR;y++){const o=document.createElement('option');o.value=y;o.textContent=y+'年';yearEl.appendChild(o);}
