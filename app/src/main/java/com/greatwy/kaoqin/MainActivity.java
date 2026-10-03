@@ -22,11 +22,9 @@ public class MainActivity extends Activity {
 
         notePrefs = getSharedPreferences("kaoqin_notes", Context.MODE_PRIVATE);
 
-        // 每天凌晨1点填写当天备注；如果错过闹钟，1点以后打开APP时补填当天。
+        // 打开软件立即补齐当月1日至今天的空白日期；已有/手动备注不覆盖。
+        AttendanceAlarmReceiver.fillCurrentMonthMissing(this);
         AttendanceAlarmReceiver.scheduleNextAlarm(this);
-        if (Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= 1) {
-            AttendanceAlarmReceiver.fillToday(this);
-        }
 
         webView = new WebView(this);
         setContentView(webView);
