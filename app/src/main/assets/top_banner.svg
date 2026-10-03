@@ -1,18 +1,18 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 240" role="img" aria-label="麦德龙横幅">
   <rect width="1200" height="240" fill="#0B67B1"/>
 
-  <g transform="translate(28,26)">
-    <circle cx="66" cy="92" r="52" fill="#F7D400"/>
-    <circle cx="176" cy="92" r="52" fill="#F7D400"/>
-    <circle cx="121" cy="92" r="60" fill="#F7D400"/>
-    <path d="M40 118c16-28 36-42 62-42s46 14 62 42" fill="none" stroke="#0B67B1" stroke-width="17" stroke-linecap="round"/>
-    <circle cx="121" cy="92" r="13" fill="#0B67B1"/>
-    <path d="M96 66c10-13 24-20 39-20 16 0 28 6 39 20" fill="none" stroke="#0B67B1" stroke-width="12" stroke-linecap="round"/>
-    <path d="M56 140c18-20 29-30 56-30 29 0 42 13 59 30" fill="none" stroke="#0B67B1" stroke-width="15" stroke-linecap="round"/>
-    <circle cx="66" cy="92" r="10" fill="#0B67B1"/>
-    <circle cx="176" cy="92" r="10" fill="#0B67B1"/>
-    <path d="M60 48l26 20 34-18 34 18 24-20" fill="none" stroke="#0B67B1" stroke-width="9" stroke-linecap="round" stroke-linejoin="round"/>
+  <g transform="translate(18,20)">
+    <circle cx="80" cy="98" r="64" fill="#F4D000"/>
+    <circle cx="216" cy="98" r="64" fill="#F4D000"/>
+    <circle cx="148" cy="98" r="75" fill="#F4D000"/>
+    <path d="M46 132c20-34 47-52 84-52s65 18 84 52" fill="none" stroke="#0B67B1" stroke-width="19" stroke-linecap="round"/>
+    <circle cx="148" cy="98" r="16" fill="#0B67B1"/>
+    <path d="M104 70c16-22 35-33 58-33 23 0 41 11 58 33" fill="none" stroke="#0B67B1" stroke-width="15" stroke-linecap="round"/>
+    <path d="M62 170c22-26 38-39 84-39 48 0 66 15 87 39" fill="none" stroke="#0B67B1" stroke-width="18" stroke-linecap="round"/>
+    <circle cx="80" cy="98" r="12" fill="#0B67B1"/>
+    <circle cx="216" cy="98" r="12" fill="#0B67B1"/>
+    <path d="M72 42l38 28 42-22 42 22 32-28" fill="none" stroke="#0B67B1" stroke-width="10" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
 
-  <text x="340" y="152" fill="#FFFFFF" font-size="96" font-weight="700" font-family="Microsoft YaHei, PingFang SC, sans-serif">麦德龙</text>
+  <text x="350" y="150" fill="#FFFFFF" font-size="94" font-weight="700" font-family="Microsoft YaHei, PingFang SC, sans-serif">麦德龙</text>
 </svg>
