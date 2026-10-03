@@ -30,23 +30,40 @@ public class AttendanceAlarmReceiver extends BroadcastReceiver {
 
     public static void fillToday(Context context) {
         Calendar today = Calendar.getInstance();
+        fillDate(context, today);
+    }
 
-        int year = today.get(Calendar.YEAR);
-        int month = today.get(Calendar.MONTH) + 1;
-        int day = today.get(Calendar.DAY_OF_MONTH);
+    // 打开软件时立即补齐当月1号到今天的空白日期。
+    // 只处理当前月份；已有备注或用户手动填写的备注不覆盖。
+    public static void fillCurrentMonthMissing(Context context) {
+        Calendar today = Calendar.getInstance();
+        Calendar day = (Calendar) today.clone();
+        day.set(Calendar.DAY_OF_MONTH, 1);
+
+        int todayDay = today.get(Calendar.DAY_OF_MONTH);
+        for (int d = 1; d <= todayDay; d++) {
+            day.set(Calendar.DAY_OF_MONTH, d);
+            fillDate(context, day);
+        }
+    }
+
+    private static void fillDate(Context context, Calendar day) {
+        int year = day.get(Calendar.YEAR);
+        int month = day.get(Calendar.MONTH) + 1;
+        int date = day.get(Calendar.DAY_OF_MONTH);
 
         String key = "kaoqin_note_" + year + "-" + String.format("%02d", month)
-                + "-" + String.format("%02d", day);
+                + "-" + String.format("%02d", date);
 
         SharedPreferences prefs = context.getSharedPreferences(PREFS, Context.MODE_PRIVATE);
 
-        // 用户已经手动填写过的备注不覆盖。
-        if (prefs.getBoolean(MANUAL_PREFIX + key, false)) {
+        // 已有备注，或用户已经手动填写过，均不覆盖。
+        if (prefs.contains(key) || prefs.getBoolean(MANUAL_PREFIX + key, false)) {
             return;
         }
 
-        // 当天是周一填“休息”，其他日期一律填“正常”。
-        String value = today.get(Calendar.DAY_OF_WEEK) == Calendar.MONDAY ? "休息" : "正常";
+        // 周六休息，其余日期正常。
+        String value = day.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY ? "休息" : "正常";
 
         prefs.edit()
                 .putString(key, value)
